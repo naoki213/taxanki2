@@ -1462,8 +1462,9 @@ document.addEventListener('keydown', (e) => {
   if (!p || p.type !== 'mask') return;
   if (!questionContainer) return;
 
-  /* ===== Shift + Enter：すべて再マスク ===== */
-  if (e.key === 'Enter' && e.shiftKey) {
+/* ===== P：すべて再マスク ===== */
+if (e.key === 'p' || e.key === 'P') {
+
     questionContainer.querySelectorAll('.mask')
       .forEach(m => m.classList.remove('revealed'));
 
