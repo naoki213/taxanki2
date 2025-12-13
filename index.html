@@ -27,11 +27,11 @@
       <div class="card">
         <h2>出題</h2>
         <div class="controls">
-          <button id="startAllBtn" class="btn primary">すべてから出題（条件指定可）</button>
+          <button id="startAllBtn" class="btn primary">すべてから出題</button>
           <button id="startByCatBtn" class="btn">カテゴリを意識して出題</button>
         </div>
         <p class="muted" style="margin-top:8px;">
-          出題条件（カテゴリ・問題形式・スコア条件）は、どちらのボタンからでも指定できます。
+          「カテゴリを意識して出題」では、カテゴリ・問題形式・スコア条件を指定できます。
         </p>
       </div>
 
@@ -43,7 +43,7 @@
         </div>
       </div>
 
-      <!-- 下部固定バー（Aタブ用：マスク・文章問題のみ使用） -->
+      <!-- 下部固定バー（マスク・文章問題用） -->
       <div class="bottombar" id="answerBar">
         <button id="revealBtn" class="btn primary">解答確認</button>
         <div id="judgeBtns" class="judge hidden">
@@ -151,6 +151,17 @@
     <section id="tab-c" class="page">
       <div class="card">
         <h2>編集・確認</h2>
+
+        <!-- 形式フィルタ -->
+        <div class="row wrap">
+          <span class="muted">形式：</span>
+          <button class="btn small ctype-btn primary" data-ctype="all">すべて</button>
+          <button class="btn small ctype-btn" data-ctype="mask">マスク</button>
+          <button class="btn small ctype-btn" data-ctype="qa">文章</button>
+          <button class="btn small ctype-btn" data-ctype="ox">○×</button>
+        </div>
+
+        <!-- カテゴリフィルタ -->
         <div class="row wrap">
           <div class="chips" id="catChips"></div>
           <button id="clearCatFilterBtn" class="btn">カテゴリ絞り込み解除</button>
@@ -173,7 +184,16 @@
     <!-- ====== D: 記録 ====== -->
     <section id="tab-d" class="page">
       <div class="card">
-        <h2>進捗グラフ（カテゴリ別正答率）</h2>
+        <h2>カテゴリ別スコア達成数</h2>
+
+        <!-- スコアthreshold切り替え -->
+        <div class="row wrap">
+          <span class="muted">スコア基準：</span>
+          <button class="btn small score-filter-btn primary" data-threshold="3">+3以上</button>
+          <button class="btn small score-filter-btn" data-threshold="5">+5以上</button>
+          <button class="btn small score-filter-btn" data-threshold="7">+7以上</button>
+        </div>
+
         <div style="height:260px"><canvas id="progressChart"></canvas></div>
       </div>
 
