@@ -1445,7 +1445,7 @@
     }
   }
 
- /* ===== マスク問題：キーボード操作（完成版） ===== */
+/* ===== マスク問題：キーボード操作（完成版） ===== */
 document.addEventListener('keydown', (e) => {
 
   // 入力中は無効
@@ -1464,13 +1464,14 @@ document.addEventListener('keydown', (e) => {
 
   /* ===== Shift + Enter：すべて再マスク ===== */
   if (e.key === 'Enter' && e.shiftKey) {
-    questionContainer
-      .querySelectorAll('.mask')
+    questionContainer.querySelectorAll('.mask')
       .forEach(m => m.classList.remove('revealed'));
+
     revealedMaskStack = [];
     isRevealed = false;
     if (revealBtn) revealBtn.textContent = '解答確認';
     if (judgeBtns) judgeBtns.classList.add('hidden');
+
     e.preventDefault();
     return;
   }
@@ -1496,7 +1497,20 @@ document.addEventListener('keydown', (e) => {
       return;
     }
 
-      /* ===== O / D / X：キーボード採点 ===== */
+    // 全部外し終わったら解答表示
+    if (!isRevealed) {
+      setReveal(true);
+      e.preventDefault();
+      return;
+    }
+
+    // 次の問題へ
+    renderQuestion(nextQuestionId());
+    e.preventDefault();
+    return;
+  }
+
+  /* ===== O / D / X：キーボード採点 ===== */
   if (!isRevealed) return; // 解答表示中のみ有効
 
   if (e.key === 'o' || e.key === 'O') {
@@ -1516,20 +1530,8 @@ document.addEventListener('keydown', (e) => {
     e.preventDefault();
     return;
   }
-
-
-    // 全部外し終わったら解答表示
-    if (!isRevealed) {
-      setReveal(true);
-      e.preventDefault();
-      return;
-    }
-
-    // 次の問題へ
-    renderQuestion(nextQuestionId());
-    e.preventDefault();
-  }
 });
+
 
 
 
