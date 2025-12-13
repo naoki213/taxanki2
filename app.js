@@ -178,7 +178,7 @@
   // C
   const problemList        = $('#problemList');
   const catChips           = $('#catChips');
-  const clearCatFilterBtn  = $('#clearCatFilterBtn']);
+  const clearCatFilterBtn  = $('#clearCatFilterBtn');
   const exportJsonBtn      = $('#exportJsonBtn');
   const importJsonInput    = $('#importJsonInput');
   const storageInfoEl      = $('#storageInfo');
