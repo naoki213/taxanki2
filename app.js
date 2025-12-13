@@ -1445,7 +1445,7 @@
     }
   }
 
-  /* ===== Enter / Backspace でマスク操作（問題解答時のみ） ===== */
+ /* ===== マスク問題：キーボード操作（完成版） ===== */
 document.addEventListener('keydown', (e) => {
 
   // 入力中は無効
@@ -1461,6 +1461,19 @@ document.addEventListener('keydown', (e) => {
   const p = getCurrentProblem();
   if (!p || p.type !== 'mask') return;
   if (!questionContainer) return;
+
+  /* ===== Shift + Enter：すべて再マスク ===== */
+  if (e.key === 'Enter' && e.shiftKey) {
+    questionContainer
+      .querySelectorAll('.mask')
+      .forEach(m => m.classList.remove('revealed'));
+    revealedMaskStack = [];
+    isRevealed = false;
+    if (revealBtn) revealBtn.textContent = '解答確認';
+    if (judgeBtns) judgeBtns.classList.add('hidden');
+    e.preventDefault();
+    return;
+  }
 
   /* ===== Backspace / Delete：直前に外したマスクを戻す ===== */
   if (e.key === 'Backspace' || e.key === 'Delete') {
@@ -1495,6 +1508,7 @@ document.addEventListener('keydown', (e) => {
     e.preventDefault();
   }
 });
+
 
 
   /* ===== 初期描画 ===== */
