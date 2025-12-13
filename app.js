@@ -1445,61 +1445,57 @@
     }
   }
 
-  /* ===== Enter でマスクを1つずつ外す（問題解答時のみ） ===== */
-  document.addEventListener('keydown', (e) => {
-    // Enter 以外は無視
-    if (e.key !== 'Enter') return;
+  /* ===== Enter / Backspace でマスク操作（問題解答時のみ） ===== */
+document.addEventListener('keydown', (e) => {
 
-    // 入力系へのフォーカス中は無効
-    const tag = document.activeElement.tagName.toLowerCase();
-    if (['input', 'textarea', 'select'].includes(tag)) return;
-    if (document.activeElement.isContentEditable) return;
+  // 入力中は無効
+  const tag = document.activeElement.tagName.toLowerCase();
+  if (['input', 'textarea', 'select'].includes(tag)) return;
+  if (document.activeElement.isContentEditable) return;
 
-    // モーダル開いてるときは無効
-    if (!catModal.classList.contains('hidden') || !editModal.classList.contains('hidden')) {
+  // モーダル中は無効
+  if (!catModal.classList.contains('hidden') || !editModal.classList.contains('hidden')) {
+    return;
+  }
+
+  const p = getCurrentProblem();
+  if (!p || p.type !== 'mask') return;
+  if (!questionContainer) return;
+
+  /* ===== Backspace / Delete：直前に外したマスクを戻す ===== */
+  if (e.key === 'Backspace' || e.key === 'Delete') {
+    if (revealedMaskStack.length > 0) {
+      const last = revealedMaskStack.pop();
+      last.classList.remove('revealed');
+      e.preventDefault();
+    }
+    return;
+  }
+
+  /* ===== Enter：マスクを1つ外す ===== */
+  if (e.key === 'Enter') {
+    const masks = questionContainer.querySelectorAll('.mask:not(.revealed)');
+    if (masks.length > 0) {
+      const m = masks[0];
+      m.classList.add('revealed');
+      revealedMaskStack.push(m);
+      e.preventDefault();
       return;
     }
 
-    const p = getCurrentProblem();
-    if (!p) return;
-
-    // マスク問題以外は無効
-    if (p.type !== 'mask') return;
-
-    if (!questionContainer) return;
-
-    // 未表示のマスクを1つだけ外す
-    const masks = questionContainer.querySelectorAll('.mask:not(.revealed)');
-if (masks.length > 0) {
-  const m = masks[0];
-  m.classList.add('revealed');
-  revealedMaskStack.push(m); // ★追加
-  e.preventDefault();
-  return;
-  // Backspace / Delete → 直前に外したマスクを1つ戻す
-if ((e.key === 'Backspace' || e.key === 'Delete') && p.type === 'mask') {
-  if (revealedMaskStack.length > 0) {
-    const last = revealedMaskStack.pop();
-    last.classList.remove('revealed');
-    e.preventDefault();
-  }
-  return;
-}
-
-}
-
-
-    // 全部外し終わった後、まだ解答バーが出ていなければ表示
+    // 全部外し終わったら解答表示
     if (!isRevealed) {
       setReveal(true);
       e.preventDefault();
       return;
     }
 
-    // 解答バー表示中の Enter は次の問題へ
+    // 次の問題へ
     renderQuestion(nextQuestionId());
     e.preventDefault();
-  });
+  }
+});
+
 
   /* ===== 初期描画 ===== */
   window.addEventListener('beforeunload', () => {
