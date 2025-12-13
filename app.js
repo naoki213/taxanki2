@@ -1476,6 +1476,16 @@ if (masks.length > 0) {
   revealedMaskStack.push(m); // ★追加
   e.preventDefault();
   return;
+  // Backspace / Delete → 直前に外したマスクを1つ戻す
+if ((e.key === 'Backspace' || e.key === 'Delete') && p.type === 'mask') {
+  if (revealedMaskStack.length > 0) {
+    const last = revealedMaskStack.pop();
+    last.classList.remove('revealed');
+    e.preventDefault();
+  }
+  return;
+}
+
 }
 
 
