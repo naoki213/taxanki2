@@ -949,6 +949,7 @@
   });
 
   /* ===== A：出題・採点 ===== */
+  let revealedMaskStack = [];
   let currentPool = [];
   let currentId   = null;
   let isRevealed  = false;
@@ -1173,6 +1174,7 @@
   function renderQuestion(id) {
     const p = getProblemById(id);
     if (!p || !questionContainer) return;
+    revealedMaskStack = []; // ★追加：直前に外したマスク履歴をリセット
     currentId = id;
     oxAnswered = false;
 
@@ -1468,11 +1470,14 @@
 
     // 未表示のマスクを1つだけ外す
     const masks = questionContainer.querySelectorAll('.mask:not(.revealed)');
-    if (masks.length > 0) {
-      masks[0].classList.add('revealed');
-      e.preventDefault();
-      return;
-    }
+if (masks.length > 0) {
+  const m = masks[0];
+  m.classList.add('revealed');
+  revealedMaskStack.push(m); // ★追加
+  e.preventDefault();
+  return;
+}
+
 
     // 全部外し終わった後、まだ解答バーが出ていなければ表示
     if (!isRevealed) {
