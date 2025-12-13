@@ -1496,6 +1496,28 @@ document.addEventListener('keydown', (e) => {
       return;
     }
 
+      /* ===== O / D / X：キーボード採点 ===== */
+  if (!isRevealed) return; // 解答表示中のみ有効
+
+  if (e.key === 'o' || e.key === 'O') {
+    gradeCurrent('o'); // 〇
+    e.preventDefault();
+    return;
+  }
+
+  if (e.key === 'd' || e.key === 'D') {
+    gradeCurrent('d'); // △
+    e.preventDefault();
+    return;
+  }
+
+  if (e.key === 'x' || e.key === 'X') {
+    gradeCurrent('x'); // ×
+    e.preventDefault();
+    return;
+  }
+
+
     // 全部外し終わったら解答表示
     if (!isRevealed) {
       setReveal(true);
